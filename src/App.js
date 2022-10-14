@@ -1,25 +1,45 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import { useState } from 'react';
+import Alert from './Alert';
 import './App.css';
+import NavBar from './NavBar';
+import TextArea from './TextArea';
+
 
 function App() {
+  const [Mode,setMode] = useState("light");
+  const change_theme = ()=>{
+    if (Mode==="dark") {
+      setMode("light");
+      showAlert("Light mode has been set.","success")
+      document.body.style.backgroundColor = "#0000";
+      document.body.style.color = "#000000";
+    }
+    else{
+      setMode("dark");
+      showAlert("Dark mode has been set.","success")
+      document.body.style.backgroundColor = "#1A1A1A";
+      document.body.style.color = "white";
+    }
+  }
+  const [alert,setAlert] = useState(null);
+  const showAlert = (messagee,type)=>{
+    setAlert({
+      msg: messagee,
+      type: type
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar title="TextUtils" mode={Mode} toggleMode={change_theme} />
+      <Alert alert={alert}/>
+      <TextArea showAlert={showAlert}/>
+    </>
   );
 }
 
 export default App;
+
